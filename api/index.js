@@ -2,7 +2,7 @@ import axios from "axios";
 import FormData from "form-data";
 
 export const instance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://localhost:8080/api",
 });
 
 async function signup(account) {
@@ -11,19 +11,22 @@ async function signup(account) {
   formData.append("email", account.email);
   formData.append("password", account.password);
   formData.append("profileImage", account.profileImage);
-  return await instance.post("/auth/signup", formData, {
+  const response = await instance.post("/auth/signup", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
+  return response.data;
 }
 
 async function signin(email, password) {
-  return await instance.post("/auth/signin", { email, password });
+  const response = await instance.post("/auth/signin", { email, password });
+  return response.data;
 }
 
 async function getAccountById(id) {
-  return await instance.get(`/accounts/${id}`);
+  const response = await instance.get(`/accounts/${id}`);
+  return response.data;
 }
 
 export { signup, signin, getAccountById };
